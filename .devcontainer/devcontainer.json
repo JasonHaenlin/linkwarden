@@ -1,5 +1,6 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+// ADD to schema.prisma: binaryTargets = ["native", "debian-openssl-1.1.x"]
 {
   "name": "Node.js & TypeScript",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
@@ -18,5 +19,9 @@
   // "customizations": {},
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  "remoteUser": "root"
+  "remoteUser": "root",
+  "runArgs": ["--network=my_dev_network"],
+  "remoteEnv": {
+    "DATABASE_HOST": "dev-postgres"
+  }
 }
