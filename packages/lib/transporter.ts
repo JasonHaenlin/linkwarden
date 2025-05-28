@@ -1,8 +1,11 @@
 import { createTransport } from "nodemailer";
 
 export default createTransport({
-  url: process.env.EMAIL_SERVER,
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT ?? '465', 10),
+  secure: true,
   auth: {
     user: process.env.EMAIL_FROM,
+    pass: process.env.SMTP_PASS,
   },
 });

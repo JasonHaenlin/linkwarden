@@ -326,6 +326,7 @@ if (process.env.NEXT_PUBLIC_AUTHELIA_ENABLED === "true") {
     authorization: { params: { scope: "openid email profile" } },
     idToken: true,
     checks: ["pkce", "state"],
+    httpOptions: {timeout: 10000},
     profile(profile) {
       return {
         id: profile.sub,

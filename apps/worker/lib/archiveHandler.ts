@@ -118,7 +118,26 @@ export default async function archiveHandler(
           await pdfHandler(link);
           return;
         } else if (link.url) {
-          await page.goto(link.url, { waitUntil: "domcontentloaded" });
+          // Set a more realistic user agent
+          // ---- BESPOKE START ----
+          await page.setExtraHTTPHeaders({
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Sec-Fetch-User': '?1'
+          });
+
+          await page.goto(link.url, { waitUntil: "domcontentloaded", timeout: 30000 });
+
+          // Simulate human-like behavior
+          await page.mouse.move(Math.random() * 500, Math.random() * 500);
+          await page.waitForTimeout(500);
 
           // Handle Monolith being sent in beforehand while making sure other values line up
           if (link.monolith?.endsWith(".html")) {
@@ -141,6 +160,8 @@ export default async function archiveHandler(
           }
 
           const metaDescription = await page.evaluate(() => {
+            // Simulate some scrolling
+            window.scrollTo(0, 100);
             const description = document.querySelector(
               'meta[name="description"]'
             );
@@ -148,6 +169,7 @@ export default async function archiveHandler(
           });
 
           const content = await page.content();
+          // ---- BESPOKE END ----
 
           // Preview
           if (!link.preview) await handleArchivePreview(link, page);
