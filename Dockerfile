@@ -2,7 +2,7 @@
 # Purpose: Uses the Rust image to build monolith
 # Notes:
 #  - Fine to leave extra here, as only the resulting binary is copied out
-FROM docker.io/rust:1.80-bullseye AS monolith-builder
+FROM docker.io/rust:1.81-bullseye AS monolith-builder
 
 RUN set -eux && cargo install --locked monolith
 
@@ -51,4 +51,4 @@ HEALTHCHECK --interval=30s \
 
 EXPOSE 3000
 
-CMD yarn prisma migrate deploy && yarn start
+CMD ["sh", "-c", "yarn prisma migrate deploy && yarn start"]
