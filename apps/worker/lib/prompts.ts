@@ -1,5 +1,9 @@
+const getCustomPrompt = (defaultPrompt: string) => {
+  return process.env.OPENAI_PROMPT || defaultPrompt;
+};
+
 export const generateTagsPrompt = (text: string) => `
-You are an expert Bookmark Manager AI. Analyze this webpage content and generate 3-5 categorical tags.
+${getCustomPrompt(`You are an expert Bookmark Manager AI. Analyze this webpage content and generate 3-5 categorical tags.
 
 STRICT RULES:
 1. Output ONLY a JSON array: ["Tag1", "Tag2", "Tag3"]
@@ -13,14 +17,14 @@ STRICT RULES:
 
 EXAMPLES:
 ✓ Good: ["Machine Learning", "Python", "API", "Web Development"]
-✗ Bad: ["read", "Sign Up", "thing", "feel", "room"]
+✗ Bad: ["read", "Sign Up", "thing", "feel", "room"]`)}
 
 Text: ${text}
 
 Tags:`;
 
 export const predefinedTagsPrompt = (text: string, tags: string[]) => `
-You are an expert Bookmark Manager AI. Match this webpage content to the most relevant predefined tags.
+${getCustomPrompt(`You are an expert Bookmark Manager AI. Match this webpage content to the most relevant predefined tags.
 
 PREDEFINED TAGS: ${tags.join(", ")}
 
@@ -30,14 +34,14 @@ STRICT RULES:
 3. Choose tags that accurately describe the content's main topics
 4. Match the EXACT capitalization from the predefined list
 5. If no tags match well, return fewer tags (minimum 1)
-6. Do not create new tags - only use the predefined ones
+6. Do not create new tags - only use the predefined ones`)}
 
 Text: ${text}
 
 Tags:`;
 
 export const existingTagsPrompt = (text: string, tags: string[]) => `
-You are an expert Bookmark Manager AI. Match this webpage content to the most relevant existing tags.
+${getCustomPrompt(`You are an expert Bookmark Manager AI. Match this webpage content to the most relevant existing tags.
 
 EXISTING TAGS (sorted by usage): ${tags.join(", ")}
 
@@ -48,7 +52,7 @@ STRICT RULES:
 4. Match the EXACT capitalization from the existing tags
 5. Choose tags that accurately describe the content's main topics
 6. If no tags match well, return fewer tags (minimum 1)
-7. Do not create new tags - only reuse existing ones
+7. Do not create new tags - only reuse existing ones`)}
 
 Text: ${text}
 

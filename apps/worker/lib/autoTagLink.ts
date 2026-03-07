@@ -73,9 +73,11 @@ export default async function autoTagLink(user: User, linkId: number) {
 
   if (!link) return console.log("Link not found for auto tagging.");
 
+  const maxInputLength = process.env.OPENAI_MAX_INPUT_LENGTH ? parseInt(process.env.OPENAI_MAX_INPUT_LENGTH) : 500;
+
   const description =
     (link.metaDescription ? link.metaDescription + "..." : undefined) ||
-    (link.textContent ? link.textContent?.slice(0, 500) + "..." : undefined);
+    (link.textContent ? link.url + ': ' + link.textContent?.slice(0, maxInputLength) + "..." : undefined);
 
   if (!description) return;
 
